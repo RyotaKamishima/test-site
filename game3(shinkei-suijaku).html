@@ -55,7 +55,7 @@
   <script>
     // images/ディレクトリ内に img1.jpg ～ img20.jpg がある場合
     const totalImages = 27; // images/内の画像の総数
-    const imageFiles = Array.from({length: totalImages}, (_,i) => `./images/game3/img${i+1}.jpg`);
+    const imageFiles = Array.from({length: totalImages}, (_,i) => `img${i+1}.jpg`);
 
     // 配列からランダムに8枚選ぶ関数
     function pickRandom(array, num) {
