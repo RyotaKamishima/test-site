@@ -114,7 +114,7 @@
     </section>
   </div>
   <div class="social">
-    <a href="https://www.instagram.com/koyamoutain0613/" target="_blank" rel="noopener">
+    <a href="https://www.instagram.com/@koyamoutain0613/" target="_blank" rel="noopener">
       <img src="images/insta-icon.jpg" alt="Instagram" class="social-icon">
       <span class="social-text">@koyamoutain0613</span>
     </a>
@@ -132,22 +132,6 @@
   </footer>
 
   <script>
-    // ダークモード切替
-    const toggle = document.getElementById('darkToggle');
-    toggle.addEventListener('click', () => {
-      document.body.classList.toggle('dark');
-      toggle.textContent = document.body.classList.contains('dark') ? '☀️' : '🌙';
-    });
-
-    // ページトップへ戻るボタン表示制御
-    const toTop = document.getElementById('toTop');
-    window.addEventListener('scroll', () => {
-      toTop.style.display = window.scrollY > 200 ? 'block' : 'none';
-    });
-    toTop.addEventListener('click', () =>
-      window.scrollTo({ top: 0, behavior: 'smooth' })
-    );
-
     // 画像クリックでモーダル表示
     const profileImg = document.getElementById('profileImg');
     const modal = document.getElementById('imgModal');
