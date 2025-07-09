@@ -130,6 +130,13 @@
       display: block;
     }
 
+    .flash.puchun {
+      opacity: 1;
+      background: white;
+      transition: none;
+      display: block;
+    }
+
     #whiteout-text {
       position: absolute;
       top: 40%;
@@ -140,15 +147,15 @@
       background: linear-gradient(45deg, red, orange, yellow, lime, cyan, blue, violet);
       -webkit-background-clip: text;
       color: transparent;
-      animation: glow 1s infinite alternate, shake 0.5s infinite;
       text-shadow: 0 0 10px #fff, 0 0 20px #ff0000;
       z-index: 1001;
-      opacity: 0;
-      transition: opacity 0.5s;
+      display: flex;
+      gap: 10px;
     }
 
-    .flash.whiteout #whiteout-text {
-      opacity: 1;
+    #whiteout-text span {
+      opacity: 0;
+      transition: opacity 0.3s ease;
     }
 
     #whiteout-button {
@@ -195,30 +202,11 @@
       0% { transform: rotate(0deg) translateX(100px) rotate(0deg); }
       100% { transform: rotate(360deg) translateX(100px) rotate(-360deg); }
     }
-
-    @keyframes glow {
-      from { text-shadow: 0 0 10px #fff, 0 0 20px #ff0000; }
-      to   { text-shadow: 0 0 20px #fff, 0 0 40px #ff0000; }
-    }
-
-    @keyframes shake {
-      0%, 100% { transform: translate(-50%, -50%) rotate(0deg); }
-      25% { transform: translate(-50%, -50%) rotate(2deg); }
-      50% { transform: translate(-50%, -50%) rotate(-2deg); }
-      75% { transform: translate(-50%, -50%) rotate(2deg); }
-    }
   </style>
 </head>
 <body>
   <h1>🎰 小山スロット</h1>
-<nav>
-    <ul>
-      <li><a href="index.html">ホーム</a></li>
-      <li><a href="game.html">ゲームコーナー</a></li>
-      <li><a href="game2.html">ゲームコーナーver2</a></li>
-      <li><a href="game3(shinkei-suijaku).html">ゲームコーナーver3</a></li>
-    </ul>
-  </nav>
+
   <div class="slot-machine" id="machine">
     <div class="reels">
       <img id="reel1" src="" />
@@ -232,7 +220,7 @@
   <img id="subliminal" class="subliminal" src="./slot_image/subliminal.png">
 
   <div id="flash" class="flash">
-    <div id="whiteout-text">小山確定</div>
+    <div id="whiteout-text"></div>
     <button id="whiteout-button">小山確定ボタン</button>
     <div id="runner-orbit"></div>
   </div>
@@ -264,6 +252,7 @@
     const flash = document.getElementById('flash');
     const whiteoutButton = document.getElementById('whiteout-button');
     const orbitContainer = document.getElementById('runner-orbit');
+    const whiteoutText = document.getElementById('whiteout-text');
     let finalResult = [];
     let whiteoutPending = false;
 
@@ -305,6 +294,40 @@
       setTimeout(() => orbitContainer.innerHTML = '', 700);
     }
 
+    function animateKoyamaText(callback) {
+      const message = "小山確定";
+      whiteoutText.innerHTML = '';
+      let index = 0;
+      function showNextChar() {
+        if (index < message.length) {
+          const span = document.createElement('span');
+          span.textContent = message[index];
+          whiteoutText.appendChild(span);
+          requestAnimationFrame(() => {
+            span.style.opacity = 1;
+          });
+          index++;
+          setTimeout(showNextChar, 300);
+        } else {
+          setTimeout(callback, 500);
+        }
+      }
+      showNextChar();
+    }
+
+    function triggerPuchunWhiteout() {
+      flash.classList.add('puchun');
+      flash.style.display = 'block';
+      setTimeout(() => {
+        flash.classList.remove('puchun');
+        flash.classList.add('whiteout');
+        animateKoyamaText(() => {
+          createOrbitRunners();
+          whiteoutButton.style.opacity = 1;
+        });
+      }, 600);
+    }
+
     function startSpinning() {
       reels.forEach(reel => {
         reel.spinning = true;
@@ -338,8 +361,7 @@
         if (a === b && b === c) {
           if (Math.random() < 0.1) {
             whiteoutPending = true;
-            flash.classList.add('whiteout');
-            createOrbitRunners();
+            triggerPuchunWhiteout();
           } else {
             result.textContent = "🎉 大当たり！！";
             machine.classList.add('win');
@@ -364,7 +386,10 @@
       spinBtn.disabled = true;
       flash.classList.remove('whiteout');
       whiteoutPending = false;
-      orbitContainer.innerHTML = '';
+      whiteoutButton.style.opacity = 0;
+      whiteoutText.innerHTML = "";
+      orbitContainer.innerHTML = "";
+
       const isBigWin = Math.random() < 0.2;
       if (isBigWin) {
         const winImg = getRandomImage();
@@ -372,14 +397,14 @@
       } else {
         finalResult = [getRandomImage(), getRandomImage(), getRandomImage()];
       }
+
       startSpinning();
     });
 
     reels.forEach((reel, index) => {
       reel.el.addEventListener('click', () => {
         if (index === 2 && whiteoutPending) {
-          flash.classList.add('whiteout');
-          createOrbitRunners();
+          triggerPuchunWhiteout();
         } else {
           stopReel(index);
         }
