@@ -5,6 +5,29 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>ご挨拶 | 小山 達成感 オフィシャルサイト</title>
   <link rel="stylesheet" href="css/webstyle.css">
+   <style>
+    /* 背景画像を薄く表示するための疑似要素 */
+    body {
+      position: relative;
+      overflow: hidden;
+    }
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: url('./image/free_material/') no-repeat center center;
+      background-size: cover;
+      opacity: 0.1;       /* 画像の透過度を調整（0.0～1.0） */
+      z-index: -1;        /* 本文より背面に配置 */
+    }
+
+    /* 本文を乗せるコンテナは z-index: 0 以上に */
+    .container {
+      position: relative;
+      z-index: 0;
+    }
+  </style>
 </head>
 
 <body>
