@@ -46,7 +46,7 @@ a { text-decoration: none; color: inherit; }
 .hero {
   display: flex; align-items: center; justify-content: center;
   height: 80vh;
-  background: url('../images/hero-bg.jpg') center/cover no-repeat;
+  background: url('image/haikei.jpg') center/cover no-repeat;
   position: relative;
   color: #fff;
   text-align: center;
