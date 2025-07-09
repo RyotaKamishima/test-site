@@ -1,5 +1,5 @@
 /*----------------------------------------
-  Webstyle.css - プレミアムデザイン 一新版
+  Webstyle.css - プレミアムデザイン 第二版（ナビ文字サイズ調整）
 ----------------------------------------*/
 
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@400;600&display=swap');
@@ -49,6 +49,7 @@ nav li {
 }
 nav a {
   font-weight: 600;
+  font-size: 0.875rem; /* 文字を少し小さく */
   padding: 0.5rem 0;
   color: var(--color-text-light);
   transition: color var(--transition);
