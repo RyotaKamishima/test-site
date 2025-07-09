@@ -173,6 +173,29 @@
       opacity: 1;
     }
 
+    #runner-orbit {
+      position: absolute;
+      width: 200px;
+      height: 200px;
+      top: 65%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      z-index: 1003;
+    }
+
+    .runner-orbit-img {
+      position: absolute;
+      width: 40px;
+      height: 40px;
+      animation: orbit 2s linear infinite;
+    }
+
+    @keyframes orbit {
+      0% { transform: rotate(0deg) translateX(100px) rotate(0deg); }
+      100% { transform: rotate(360deg) translateX(100px) rotate(-360deg); }
+    }
+
     @keyframes glow {
       from { text-shadow: 0 0 10px #fff, 0 0 20px #ff0000; }
       to   { text-shadow: 0 0 20px #fff, 0 0 40px #ff0000; }
@@ -200,9 +223,11 @@
   </div>
 
   <img id="subliminal" class="subliminal" src="./slot_image/subliminal.png">
+
   <div id="flash" class="flash">
     <div id="whiteout-text">小山確定</div>
     <button id="whiteout-button">小山確定ボタン</button>
+    <div id="runner-orbit"></div>
   </div>
 
   <script>
@@ -218,6 +243,7 @@
       "./slot_image/slot_image9.jpg",
       "./slot_image/slot_image10.jpg",
     ];
+
     const reels = [
       { el: document.getElementById('reel1'), interval: null, spinning: false, stopped: false },
       { el: document.getElementById('reel2'), interval: null, spinning: false, stopped: false },
@@ -230,6 +256,7 @@
     const subliminal = document.getElementById('subliminal');
     const flash = document.getElementById('flash');
     const whiteoutButton = document.getElementById('whiteout-button');
+    const orbitContainer = document.getElementById('runner-orbit');
     let finalResult = [];
     let whiteoutPending = false;
 
@@ -248,8 +275,31 @@
       }
     }
 
+    function createOrbitRunners() {
+      orbitContainer.innerHTML = '';
+      const num = 8;
+      for (let i = 0; i < num; i++) {
+        const img = document.createElement('img');
+        img.src = images[i % images.length];
+        img.className = 'runner-orbit-img';
+        img.style.animationDelay = `${i * 0.1}s`;
+        orbitContainer.appendChild(img);
+      }
+    }
+
+    function explodeOrbitRunners() {
+      const runners = orbitContainer.querySelectorAll('img');
+      runners.forEach(runner => {
+        runner.style.animation = 'none';
+        runner.style.transition = 'transform 0.6s, opacity 0.6s';
+        runner.style.transform = `translate(${Math.random()*200-100}px, ${Math.random()*200-100}px) scale(2) rotate(720deg)`;
+        runner.style.opacity = 0;
+      });
+      setTimeout(() => orbitContainer.innerHTML = '', 700);
+    }
+
     function startSpinning() {
-      reels.forEach((reel, i) => {
+      reels.forEach(reel => {
         reel.spinning = true;
         reel.stopped = false;
         reel.interval = setInterval(() => {
@@ -282,6 +332,7 @@
           if (Math.random() < 0.1) {
             whiteoutPending = true;
             flash.classList.add('whiteout');
+            createOrbitRunners();
           } else {
             result.textContent = "🎉 大当たり！！";
             machine.classList.add('win');
@@ -306,15 +357,14 @@
       spinBtn.disabled = true;
       flash.classList.remove('whiteout');
       whiteoutPending = false;
-
-      // 決定
-      if (Math.random() < 0.2) {
+      orbitContainer.innerHTML = '';
+      const isBigWin = Math.random() < 0.2;
+      if (isBigWin) {
         const winImg = getRandomImage();
         finalResult = [winImg, winImg, winImg];
       } else {
         finalResult = [getRandomImage(), getRandomImage(), getRandomImage()];
       }
-
       startSpinning();
     });
 
@@ -322,6 +372,7 @@
       reel.el.addEventListener('click', () => {
         if (index === 2 && whiteoutPending) {
           flash.classList.add('whiteout');
+          createOrbitRunners();
         } else {
           stopReel(index);
         }
@@ -331,13 +382,13 @@
     whiteoutButton.addEventListener('click', () => {
       flash.classList.remove('whiteout');
       whiteoutPending = false;
+      explodeOrbitRunners();
       machine.classList.add('win');
       result.textContent = "🎉 大当たり！！";
       spinBtn.disabled = false;
       runMultipleRunners(10);
     });
 
-    // 初期表示
     reels.forEach((r, i) => r.el.src = images[i % images.length]);
   </script>
 </body>
