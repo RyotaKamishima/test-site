@@ -30,7 +30,7 @@
 
       // 新しい的（標準画像）を配置
       const img = document.createElement('img');
-      img.src = 'target.jpg';
+      img.src = './images/game1/target.jpg';
       img.className = 'target';
       placeRandom(img);
 
@@ -40,7 +40,7 @@
         score++;
         scoreDisplay.textContent = 'スコア: ' + score;
         // ヒット画像に切り替え
-        img.src = 'hit.png';
+        img.src = './images/game1/hit.png';
         img.style.transform = 'scale(1.2)'; // 少し拡大して効果的に
         // 300ms後に次の的を出現
         setTimeout(createTarget, 300);
