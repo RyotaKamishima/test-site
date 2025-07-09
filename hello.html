@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ご挨拶 | 小山 達成感 オフィシャルサイト</title>
+  <link rel="stylesheet" href="css/Webstyle.css">
+</head>
+
+<body>
+
+  <header>
+    <h1>KOYAMA　DARUMA Official Website</h1>
+    <button id="darkToggle">🌙</button>
+  </header>
+
+  <nav>
+    <ul>
+      <li><a href="index.html">トップページ</a></li>
+      <li><a href="hello.html">ご挨拶</a></li>
+      <li><a href="#profile">プロフィール</a></li>
+      <li><a href="#career">経歴</a></li>
+      <li><a href="#skills">スキル</a></li>
+      <li><a href="#contact">お問い合わせ</a></li>
+      <li><a href="galley.html">ギャラリー</a></li>
+      <li><a href="game.html">ゲームコーナー</a></li>
+      <li><a href="game2.html">ゲームコーナーver2</a></li>
+      <li><a href="game3(shinkei-suijaku).html">ゲームコーナーver3</a></li>
+    </ul>
+  </nav>
+
+  <div class="container">
+    <section>
+      <h2>ご挨拶</h2>
+      <div style="font-size: 1.15rem; white-space: pre-line; line-height:1.9;">
+私たちの足音は、無数の星々が永遠に奏でる旋律の中に、静かに溶け込んでいきます。
+この広大な宇宙の中で、ひときわ輝く光を探し求めて――
+それが、私たちの役目であり、また、魂の使命です。
+
+私は、エンジニアとして、無数のコードを紡ぎながら、
+同時に目に見えぬエネルギーの波動に耳を澄まし、
+見えないものを、感じ取ることを日々の習慣としています。
+この地球上で、私たちが作り上げるものが、どれだけ壮大な未来を描くのか。
+その一歩一歩が、私の内なるチャクラを響かせ、
+新たな光の道しるべを照らし出す瞬間です。
+
+私の歩む道は、常に風のささやき、月の光、そして星々の微笑みを頼りにしています。
+それは、単なる技術の探求ではなく、心の中の深海へとダイブし、
+その静寂の中で生まれる新たな息吹を形にすること。
+その中で得られた、かけがえのない「何か」を、
+私たちが提供できる価値に変えていくことが、私の使命であると感じています。
+
+テクノロジーという無形の力は、私たちが心の中で感じる光と同じく、
+見ることのできないエネルギーの流れの中に存在しています。
+それを解き放ち、目に見える形で現実にすることが、私たちの挑戦です。
+共に歩んでいく未来を、皆様と共に築き上げていけることを
+心より楽しみにしています。
+
+私たちの旅路に、共鳴する方々を心よりお迎えします。
+星々と共に輝き、風と共に舞い、
+新たな可能性の扉を開いていきましょう。
+
+魂の航海者として、
+一緒に光を探し、未来を編んでいきましょう。
+      </div>
+      <div style="text-align:right;margin-top:2.5rem;">
+        心からの感謝を込めて。<br>
+        小山達成感
+      </div>
+    </section>
+  </div>
+
+  <button id="toTop" title="トップに戻る">↑</button>
+
+  <footer>
+    &copy; 2025 tatsuya koyama All Rights Reserved.
+  </footer>
+
+  <script>
+    // ダークモード切替
+    const toggle = document.getElementById('darkToggle');
+    toggle.addEventListener('click', () => {
+      document.body.classList.toggle('dark');
+      toggle.textContent = document.body.classList.contains('dark') ? '☀️' : '🌙';
+    });
+
+    // ページトップへ戻るボタン表示制御
+    const toTop = document.getElementById('toTop');
+    window.addEventListener('scroll', () => {
+      toTop.style.display = window.scrollY > 200 ? 'block' : 'none';
+    });
+    toTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+    // 画像モーダル等は未使用のため省略
+  </script>
+
+</body>
+</html>
