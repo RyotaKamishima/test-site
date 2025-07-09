@@ -257,7 +257,27 @@
       spinBtn.disabled = true;
       flash.classList.remove('whiteout');
       whiteoutPending = false;
-      finalResult = [getRandomImage(), getRandomImage(), getRandomImage()];
+    function decideResult() {
+  if (Math.random() < 0.1) {
+    // 10%で当たり
+    const hitImage = getRandomImage();
+    return [hitImage, hitImage, hitImage];
+  } else {
+    // 外れ（ランダム）
+    return [getRandomImage(), getRandomImage(), getRandomImage()];
+  }
+}
+
+spinBtn.addEventListener('click', () => {
+  result.textContent = "";
+  machine.classList.remove('hot', 'win');
+  spinBtn.disabled = true;
+  flash.classList.remove('whiteout');
+  whiteoutPending = false;
+  finalResult = decideResult();
+  startSpinning();
+});
+
       startSpinning();
     });
 
