@@ -6,9 +6,8 @@
   <title>小山　達成感 オフィシャルサイト</title>
   <link rel="stylesheet" href="css/webstyle.css">
 </head>
-
 <body>
-<div id="progress-bar"></div>
+  <div id="progress-bar"></div>
 
   <header>
     <h1>KOYAMA　DARUMA Official Website</h1>
@@ -17,7 +16,7 @@
 
   <nav>
     <ul>
-      <li><a href="#profile">プロフィール</a></li
+      <li><a href="#profile">プロフィール</a></li>
       <li><a href="#career">経歴</a></li>
       <li><a href="#skills">スキル</a></li>
       <li><a href="#contact">お問い合わせ</a></li>
@@ -29,17 +28,25 @@
       <li><a href="game4.html">ゲームコーナーver4</a></li>
     </ul>
   </nav>
-<section class="hero">
-  <div class="hero-content">
-    <h1 class="hero-title">Welcome to Our Site</h1>
-    <p class="hero-subtitle">Experience innovation.</p>
-    <a href="#services" class="btn btn-primary">Learn More</a>
-  </div>
-</section>
 
-<h2 class="section-title">Our Services</h2>
+  <section class="hero">
+    <div class="hero-content">
+      <h1 class="hero-title">Welcome to Our Site</h1>
+      <p class="hero-subtitle">Experience innovation.</p>
+      <a href="#services" class="btn btn-primary">Learn More</a>
+    </div>
+  </section>
 
-<p>Hover <span class="tooltip">here<span class="tooltip-text">Tooltip info</span></span> for details.</p>
+  <h2 class="section-title">Our Services</h2>
+
+  <p>
+    Hover
+    <span class="tooltip">
+      here
+      <span class="tooltip-text">Tooltip info</span>
+    </span>
+    for details.
+  </p>
 
   <div class="container">
     <section id="profile" class="profile">
@@ -60,12 +67,18 @@
     <section id="career">
       <h3>経歴</h3>
       <p><strong>2012年</strong> 東京大学工学部 卒業</p>
-      <p><strong>2012～2016年</strong> 株式会社IIJグローバルソリューションズ 入社<br>
-         SIerとして大手企業のネットワーク基盤構築に従事。その後左遷</p>
-      <p><strong>2016～2020年</strong> 株式会社小山製作所 設立<br>
-         次世代クラウドセキュリティ製品の設計・開発をリード。</p>
-      <p><strong>2021年～現在</strong> フリーランスエンジニア<br>
-         SD-WAN、SASE、ゼロトラストアーキテクチャのコンサルティングを展開。</p>
+      <p>
+        <strong>2012～2016年</strong> 株式会社IIJグローバルソリューションズ 入社<br>
+        SIerとして大手企業のネットワーク基盤構築に従事。その後左遷
+      </p>
+      <p>
+        <strong>2016～2020年</strong> 株式会社小山製作所 設立<br>
+        次世代クラウドセキュリティ製品の設計・開発をリード。
+      </p>
+      <p>
+        <strong>2021年～現在</strong> フリーランスエンジニア<br>
+        SD-WAN、SASE、ゼロトラストアーキテクチャのコンサルティングを展開。
+      </p>
     </section>
 
     <section id="skills">
@@ -84,7 +97,11 @@
     <section id="contact">
       <h3>お問い合わせ</h3>
       <p>ご依頼・ご相談は以下メールアドレスまでお願いいたします：</p>
-      <p><a href="mailto:tatsuya.koyama@iijglobal.co.jp">tatsuya.koyama@iijglobal.co.jp</a></p>
+      <p>
+        <a href="mailto:tatsuya.koyama@iijglobal.co.jp">
+          tatsuya.koyama@iijglobal.co.jp
+        </a>
+      </p>
     </section>
   </div>
 
@@ -112,7 +129,9 @@
     window.addEventListener('scroll', () => {
       toTop.style.display = window.scrollY > 200 ? 'block' : 'none';
     });
-    toTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+    toTop.addEventListener('click', () =>
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+    );
 
     // 画像クリックでモーダル表示
     const profileImg = document.getElementById('profileImg');
@@ -126,6 +145,5 @@
       modal.style.display = 'none';
     });
   </script>
-
 </body>
 </html>
