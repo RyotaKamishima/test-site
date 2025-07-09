@@ -88,7 +88,28 @@ a { text-decoration: none; color: inherit; }
 .hero-subtitle {
   font-size: 1.25rem;
 }
+.social {
+  text-align: center;      /* 中央寄せ */
+  margin: 2rem 0;          /* 上下マージン */
+}
 
+.social a {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+  color: inherit;          /* 現在の文字色を継承 */
+}
+
+.social-icon {
+  width: 24px;             /* アイコンのサイズ */
+  height: 24px;
+  margin-right: 8px;       /* アイコンとテキストの間隔 */
+}
+
+.social-text {
+  font-size: 1rem;
+  font-weight: bold;
+}
 
 /* ボタンユーティリティ */
 .btn { display: inline-block; padding: 0.75rem 1.5rem; font-weight: 600; border-radius: var(--radius-base); transition: transform var(--transition), box-shadow var(--transition); }
