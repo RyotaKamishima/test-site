@@ -1,1 +1,374 @@
+/* テーマ変数 */
+:root {
+  /* カラーパレット */
+  --color-primary: #00539C;
+  --color-secondary: #FFD369;
+  --color-accent: #00917C;
+  --color-bg: #F9F9F9;
+  --color-text: #333333;
+  --color-muted: #777777;
 
+  /* タイポグラフィ */
+  --font-base: 'Noto Sans JP', sans-serif;
+  --font-heading: 'M PLUS Rounded 1c', sans-serif;
+  --fz-base: 1rem;
+  --fz-lg: 1.25rem;
+  --fz-xl: 2rem;
+  --fz-2xl: 3rem;
+
+  /* スペーシング */
+  --spacer: 1rem;
+  --spacer-sm: 0.5rem;
+  --spacer-lg: 2rem;
+
+  /* ルール */
+  --border-radius: 0.5rem;
+  --transition: 0.3s ease;
+}
+
+/* リセット */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+html {
+  scroll-behavior: smooth;
+}
+body {
+  font-family: var(--font-base);
+  font-size: var(--fz-base);
+  line-height: 1.6;
+  color: var(--color-text);
+  background-color: var(--color-bg);
+}
+a {
+  color: var(--color-primary);
+  text-decoration: none;
+  transition: color var(--transition);
+}
+a:hover {
+  color: var(--color-accent);
+}
+
+/* レイアウト */
+.container {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: var(--spacer-lg) var(--spacer);
+}
+
+/* ヘッダー・ナビ */
+header {
+  background-color: var(--color-primary);
+  color: #fff;
+  padding: var(--spacer);
+}
+nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacer);
+  margin-top: var(--spacer-sm);
+}
+nav a {
+  font-weight: bold;
+  position: relative;
+}
+nav a::after {
+  content: '';
+  display: block;
+  width: 0;
+  height: 2px;
+  background: var(--color-secondary);
+  transition: width var(--transition);
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+}
+nav a:hover::after {
+  width: 100%;
+}
+
+/* 見出し */
+h1, h2, h3 {
+  font-family: var(--font-heading);
+  color: var(--color-primary);
+  margin-bottom: var(--spacer);
+  position: relative;
+}
+h2::before {
+  content: '';
+  display: block;
+  width: 4rem;
+  height: 4px;
+  background: var(--color-secondary);
+  position: absolute;
+  bottom: -8px;
+  left: 0;
+}
+
+/* ボタン */
+.btn, button {
+  font-family: var(--font-base);
+  display: inline-block;
+  padding: var(--spacer-sm) var(--spacer);
+  border-radius: var(--border-radius);
+  background-color: var(--color-accent);
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  transition: background-color var(--transition), transform var(--transition);
+}
+.btn:hover, button:hover {
+  background-color: var(--color-primary);
+  transform: translateY(-2px);
+}
+
+/* ギャラリー */
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: var(--spacer);
+}
+.gallery-item {
+  overflow: hidden;
+  border-radius: var(--border-radius);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  transition: transform var(--transition);
+}
+.gallery-item img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+.gallery-item:hover {
+  transform: scale(1.02);
+}
+
+/* プログレスバー */
+#progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 4px;
+  background: var(--color-secondary);
+  width: 0;
+  z-index: 9999;
+  transition: width 0.2s ease;
+}
+
+/* Canvas Game */
+#game-canvas {
+  display: block;
+  margin: var(--spacer-lg) auto;
+  border: 4px solid var(--color-text);
+  border-radius: var(--border-radius);
+  background: #000;
+}
+
+/* スクロールアニメーション */
+.fade-in {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity var(--transition) var(--transition), transform var(--transition);
+}
+.fade-in.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* レスポンシブ */
+@media (max-width: 600px) {
+  h2 { font-size: var(--fz-lg); }
+  .container { padding: var(--spacer) var(--spacer-sm); }
+  nav { justify-content: center; }
+}
+
+$1
+
+/* 神経衰弱ゲーム (Memory Game) */
+.game-board {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: var(--spacer);
+  max-width: 800px;
+  margin: var(--spacer-lg) auto;
+  padding: var(--spacer);
+}
+.card {
+  perspective: 1000px;
+}
+.card-inner {
+  position: relative;
+  width: 100%;
+  padding-top: 100%; /* 正方形を維持 */
+  transform-style: preserve-3d;
+  transition: transform var(--transition);
+}
+.card.flipped .card-inner {
+  transform: rotateY(180deg);
+}
+.card-front,
+.card-back {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border-radius: var(--border-radius);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  overflow: hidden;
+}
+.card-front {
+  background: var(--color-secondary);
+}
+.card-back {
+  transform: rotateY(180deg);
+}
+.card-back img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.reset-btn {
+  @apply btn; /* 既存のボタンスタイルを継承 */
+  display: block;
+  margin: var(--spacer-lg) auto;
+}
+.message {
+  text-align: center;
+  font-size: var(--fz-lg);
+  color: var(--color-accent);
+  margin-top: var(--spacer-sm);
+}
+
+
+/* index.html */
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>トップページ</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div id="progress-bar"></div>
+  <header>
+    <div class="container">
+      <h1>My Website</h1>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="galley.html">Galley</a>
+        <a href="game.html">Game</a>
+        <a href="game2.html">Game2</a>
+      </nav>
+    </div>
+  </header>
+  <main class="container">
+    <section class="fade-in">
+      <h2 id="hero-title"></h2>
+      <p>ここにイントロダクションテキスト。</p>
+    </section>
+  </main>
+  <footer>
+    <p>&copy; 2025 My Website</p>
+  </footer>
+  <script src="js/typing.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
+
+<!-- galley.html -->
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ギャラリー</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header>
+    <div class="container">
+      <h1>ギャラリー</h1>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="galley.html">Galley</a>
+        <a href="game.html">Game</a>
+        <a href="game2.html">Game2</a>
+      </nav>
+    </div>
+  </header>
+  <main class="container gallery">
+    <div class="gallery-item"><img src="images/photo1.jpg" alt="Photo1"></div>
+    <div class="gallery-item"><img src="images/photo2.jpg" alt="Photo2"></div>
+  </main>
+  <footer>
+    <p>&copy; 2025 My Website</p>
+  </footer>
+</body>
+</html>
+
+<!-- game.html -->
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ゲーム</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header>
+    <div class="container">
+      <h1>Canvas Game</h1>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="galley.html">Galley</a>
+        <a href="game.html">Game</a>
+        <a href="game2.html">Game2</a>
+      </nav>
+    </div>
+  </header>
+  <main class="container">
+    <canvas id="game-canvas" width="800" height="600"></canvas>
+  </main>
+  <footer>
+    <p>&copy; 2025 My Website</p>
+  </footer>
+  <script src="js/game.js"></script>
+</body>
+</html>
+
+<!-- game2.html -->
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ゲーム2</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header>
+    <div class="container">
+      <h1>Canvas Game 2</h1>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="galley.html">Galley</a>
+        <a href="game.html">Game</a>
+        <a href="game2.html">Game2</a>
+      </nav>
+    </div>
+  </header>
+  <main class="container">
+    <canvas id="game-canvas" width="600" height="400"></canvas>
+  </main>
+  <footer>
+    <p>&copy; 2025 My Website</p>
+  </footer>
+  <script src="js/game2.js"></script>
+</body>
+</html>
