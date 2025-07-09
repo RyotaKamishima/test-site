@@ -44,14 +44,51 @@ a { text-decoration: none; color: inherit; }
 ::-webkit-scrollbar-thumb { background: var(--color-primary); border-radius: var(--radius-base); }
 
 /* --- ヒーローセクション --- */
-.hero { display: flex; align-items: center; justify-content: center; height: 80vh; background: url("../images/haikei.jpg")  background-image: url("../images/free_material/2091abe7-566d-4c5b-9ee2-cecd34441a90.jpg");
+/* --- ヒーローセクション --- */
+.hero {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 80vh;
+  position: relative;
+  color: #fff;
+  text-align: center;
+
+  /* 背景画像 */
+  background-image: url("../images/free_material/");
+  /* 複数画像を重ねたい場合はカンマ区切りで background-image: url(...), url(...); */
+
   background-repeat: no-repeat;
   background-position: center center;
-  background-size: cover;center/cover no-repeat; position: relative; color: #fff; text-align: center; }
-.hero::after { content: ''; position: absolute; inset: 0; background: rgba(30,58,138,0.6); }
-.hero-content { position: relative; z-index: 1; max-width: 800px; animation: fade-in 1s ease-out; }
-.hero-title { font-family: 'Playfair Display', serif; font-size: 3rem; margin-bottom: 1rem; }
-.hero-subtitle { font-size: 1.25rem; }
+  background-size: cover;
+}
+
+/* オーバーレイ */
+.hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(30, 58, 138, 0.6);
+}
+
+/* コンテンツ */
+.hero-content {
+  position: relative;
+  z-index: 1;
+  max-width: 800px;
+  animation: fade-in 1s ease-out;
+}
+
+.hero-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.hero-subtitle {
+  font-size: 1.25rem;
+}
+
 
 /* ボタンユーティリティ */
 .btn { display: inline-block; padding: 0.75rem 1.5rem; font-weight: 600; border-radius: var(--radius-base); transition: transform var(--transition), box-shadow var(--transition); }
