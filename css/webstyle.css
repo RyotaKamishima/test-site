@@ -101,13 +101,13 @@ a { text-decoration: none; color: inherit; }
 }
 
 .social-icon {
-  width: 24px;             /* アイコンのサイズ */
-  height: 24px;
-  margin-right: 8px;       /* アイコンとテキストの間隔 */
+  width: 48px;             /* アイコンのサイズ */
+  height: 48px;
+  margin-right: 16px;       /* アイコンとテキストの間隔 */
 }
 
 .social-text {
-  font-size: 1rem;
+  font-size: 10rem;
   font-weight: bold;
 }
 
