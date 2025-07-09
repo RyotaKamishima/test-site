@@ -1,374 +1,230 @@
-/* テーマ変数 */
+/*----------------------------------------
+  Webstyle.css - 共通スタイルシート
+----------------------------------------*/
+
+/* --- カラーパレット --- */
 :root {
-  /* カラーパレット */
   --color-primary: #00539C;
-  --color-secondary: #FFD369;
-  --color-accent: #00917C;
+  --color-secondary: #FFA500;
   --color-bg: #F9F9F9;
+  --color-bg-dark: #222222;
   --color-text: #333333;
-  --color-muted: #777777;
-
-  /* タイポグラフィ */
-  --font-base: 'Noto Sans JP', sans-serif;
-  --font-heading: 'M PLUS Rounded 1c', sans-serif;
-  --fz-base: 1rem;
-  --fz-lg: 1.25rem;
-  --fz-xl: 2rem;
-  --fz-2xl: 3rem;
-
-  /* スペーシング */
-  --spacer: 1rem;
-  --spacer-sm: 0.5rem;
-  --spacer-lg: 2rem;
-
-  /* ルール */
-  --border-radius: 0.5rem;
-  --transition: 0.3s ease;
+  --color-text-light: #FFFFFF;
+  --color-shadow: rgba(0, 0, 0, 0.1);
+  --radius-base: 8px;
+  --transition-base: 0.3s;
 }
 
-/* リセット */
-*, *::before, *::after {
-  margin: 0;
-  padding: 0;
+/* --- リセット & ベース --- */
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 html {
   scroll-behavior: smooth;
+  font-family: 'Yu Gothic', sans-serif;
+  font-size: 16px;
 }
 body {
-  font-family: var(--font-base);
-  font-size: var(--fz-base);
-  line-height: 1.6;
-  color: var(--color-text);
+  margin: 0;
+  padding: 0;
   background-color: var(--color-bg);
+  color: var(--color-text);
+  transition: background-color var(--transition-base), color var(--transition-base);
+  line-height: 1.6;
 }
+img {
+  max-width: 100%;
+  display: block;
+}
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
 a {
   color: var(--color-primary);
   text-decoration: none;
-  transition: color var(--transition);
+  transition: color var(--transition-base);
 }
 a:hover {
-  color: var(--color-accent);
+  color: var(--color-secondary);
 }
 
-/* レイアウト */
-.container {
-  max-width: 960px;
-  margin: 0 auto;
-  padding: var(--spacer-lg) var(--spacer);
+/* --- ダークモード切替 --- */
+body.dark {
+  background-color: var(--color-bg-dark);
+  color: var(--color-text-light);
+}
+body.dark header,
+body.dark footer,
+body.dark nav {
+  background-color: #111;
+  color: var(--color-text-light);
 }
 
-/* ヘッダー・ナビ */
+/* --- ヘッダー --- */
 header {
-  background-color: var(--color-primary);
-  color: #fff;
-  padding: var(--spacer);
-}
-nav {
   display: flex;
-  flex-wrap: wrap;
-  gap: var(--spacer);
-  margin-top: var(--spacer-sm);
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background-color: var(--color-primary);
+  color: var(--color-text-light);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+header h1 {
+  margin: 0;
+  font-size: 1.75rem;
+}
+#darkToggle {
+  background: transparent;
+  font-size: 1.25rem;
+  transition: transform var(--transition-base);
+}
+#darkToggle:hover {
+  transform: rotate(20deg);
+}
+
+/* --- ナビゲーション --- */
+nav {
+  background-color: var(--color-text-light);
+  border-bottom: 1px solid #DDD;
+}
+nav ul {
+  display: flex;
+  justify-content: center;
+  margin: 0;
+  padding: 0.5rem 0;
+  list-style: none;
+}
+nav li {
+  margin: 0 1rem;
+  position: relative;
 }
 nav a {
+  padding: 0.5rem 0;
   font-weight: bold;
-  position: relative;
 }
 nav a::after {
   content: '';
-  display: block;
+  position: absolute;
+  bottom: -2px;
+  left: 0;
   width: 0;
   height: 2px;
-  background: var(--color-secondary);
-  transition: width var(--transition);
-  position: absolute;
-  bottom: -4px;
-  left: 0;
+  background: var(--color-primary);
+  transition: width var(--transition-base);
 }
 nav a:hover::after {
   width: 100%;
 }
 
-/* 見出し */
-h1, h2, h3 {
-  font-family: var(--font-heading);
-  color: var(--color-primary);
-  margin-bottom: var(--spacer);
-  position: relative;
-}
-h2::before {
-  content: '';
-  display: block;
-  width: 4rem;
-  height: 4px;
-  background: var(--color-secondary);
-  position: absolute;
-  bottom: -8px;
-  left: 0;
+/* --- コンテナ共通 --- */
+.container,
+.gallery-container,
+#game-container {
+  max-width: 960px;
+  margin: 2rem auto;
+  padding: 0 1rem;
 }
 
-/* ボタン */
-.btn, button {
-  font-family: var(--font-base);
-  display: inline-block;
-  padding: var(--spacer-sm) var(--spacer);
-  border-radius: var(--border-radius);
-  background-color: var(--color-accent);
-  color: #fff;
-  border: none;
-  cursor: pointer;
-  transition: background-color var(--transition), transform var(--transition);
-}
-.btn:hover, button:hover {
-  background-color: var(--color-primary);
-  transform: translateY(-2px);
-}
-
-/* ギャラリー */
-.gallery {
+/* --- ギャラリー --- */
+.gallery-container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: var(--spacer);
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
 }
 .gallery-item {
+  background: var(--color-text-light);
+  border-radius: var(--radius-base);
+  box-shadow: 0 2px 8px var(--color-shadow);
   overflow: hidden;
-  border-radius: var(--border-radius);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  transition: transform var(--transition);
-}
-.gallery-item img {
-  width: 100%;
-  height: auto;
-  display: block;
+  transition: transform var(--transition-base);
 }
 .gallery-item:hover {
-  transform: scale(1.02);
+  transform: translateY(-4px);
+}
+.gallery-item img {
+  transition: transform var(--transition-base);
+}
+.gallery-item:hover img {
+  transform: scale(1.05);
+}
+.gallery-item .caption {
+  padding: 0.5rem;
+  text-align: center;
+  font-size: 0.9rem;
+  color: #666;
+}
+body.dark .gallery-item {
+  background: #333;
+  box-shadow: 0 2px 8px rgba(255,255,255,0.1);
+}
+body.dark .gallery-item .caption {
+  color: #AAA;
 }
 
-/* プログレスバー */
-#progress-bar {
+/* --- モーダル --- */
+.modal {
+  display: none;
   position: fixed;
   top: 0;
   left: 0;
-  height: 4px;
-  background: var(--color-secondary);
-  width: 0;
-  z-index: 9999;
-  transition: width 0.2s ease;
-}
-
-/* Canvas Game */
-#game-canvas {
-  display: block;
-  margin: var(--spacer-lg) auto;
-  border: 4px solid var(--color-text);
-  border-radius: var(--border-radius);
-  background: #000;
-}
-
-/* スクロールアニメーション */
-.fade-in {
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity var(--transition) var(--transition), transform var(--transition);
-}
-.fade-in.is-visible {
-  opacity: 1;
-  transform: none;
-}
-
-/* レスポンシブ */
-@media (max-width: 600px) {
-  h2 { font-size: var(--fz-lg); }
-  .container { padding: var(--spacer) var(--spacer-sm); }
-  nav { justify-content: center; }
-}
-
-$1
-
-/* 神経衰弱ゲーム (Memory Game) */
-.game-board {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-  gap: var(--spacer);
-  max-width: 800px;
-  margin: var(--spacer-lg) auto;
-  padding: var(--spacer);
-}
-.card {
-  perspective: 1000px;
-}
-.card-inner {
-  position: relative;
-  width: 100%;
-  padding-top: 100%; /* 正方形を維持 */
-  transform-style: preserve-3d;
-  transition: transform var(--transition);
-}
-.card.flipped .card-inner {
-  transform: rotateY(180deg);
-}
-.card-front,
-.card-back {
-  position: absolute;
-  top: 0;
-  left: 0;
   width: 100%;
   height: 100%;
-  backface-visibility: hidden;
-  border-radius: var(--border-radius);
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  background: rgba(0,0,0,0.8);
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+}
+.modal img {
+  max-width: 90%;
+  max-height: 90%;
+  border-radius: var(--radius-base);
+}
+
+/* --- ページトップボタン --- */
+#toTop {
+  position: fixed;
+  right: 1rem;
+  bottom: 1rem;
+  padding: 0.5rem;
+  background-color: var(--color-primary);
+  color: var(--color-text-light);
+  border-radius: 50%;
+  font-size: 1.2rem;
+  display: none;
+  z-index: 1000;
+  transition: background-color var(--transition-base);
+}
+#toTop:hover {
+  background-color: var(--color-secondary);
+}
+
+/* --- ゲームコンテナ --- */
+#game-container {
+  width: 100%;
+  height: auto;
+  background: var(--color-text-light);
+  border: 2px solid #CCC;
+  border-radius: var(--radius-base);
+  position: relative;
   overflow: hidden;
 }
-.card-front {
-  background: var(--color-secondary);
+.target {
+  transition: transform 0.1s;
 }
-.card-back {
-  transform: rotateY(180deg);
-}
-.card-back img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-.reset-btn {
-  @apply btn; /* 既存のボタンスタイルを継承 */
-  display: block;
-  margin: var(--spacer-lg) auto;
-}
-.message {
+
+/* --- フッター --- */
+footer {
   text-align: center;
-  font-size: var(--fz-lg);
-  color: var(--color-accent);
-  margin-top: var(--spacer-sm);
+  padding: 1rem;
+  background-color: var(--color-primary);
+  color: var(--color-text-light);
 }
-
-
-/* index.html */
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>トップページ</title>
-  <link rel="stylesheet" href="css/style.css">
-</head>
-<body>
-  <div id="progress-bar"></div>
-  <header>
-    <div class="container">
-      <h1>My Website</h1>
-      <nav>
-        <a href="index.html">Home</a>
-        <a href="galley.html">Galley</a>
-        <a href="game.html">Game</a>
-        <a href="game2.html">Game2</a>
-      </nav>
-    </div>
-  </header>
-  <main class="container">
-    <section class="fade-in">
-      <h2 id="hero-title"></h2>
-      <p>ここにイントロダクションテキスト。</p>
-    </section>
-  </main>
-  <footer>
-    <p>&copy; 2025 My Website</p>
-  </footer>
-  <script src="js/typing.js"></script>
-  <script src="js/main.js"></script>
-</body>
-</html>
-
-<!-- galley.html -->
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ギャラリー</title>
-  <link rel="stylesheet" href="css/style.css">
-</head>
-<body>
-  <header>
-    <div class="container">
-      <h1>ギャラリー</h1>
-      <nav>
-        <a href="index.html">Home</a>
-        <a href="galley.html">Galley</a>
-        <a href="game.html">Game</a>
-        <a href="game2.html">Game2</a>
-      </nav>
-    </div>
-  </header>
-  <main class="container gallery">
-    <div class="gallery-item"><img src="images/photo1.jpg" alt="Photo1"></div>
-    <div class="gallery-item"><img src="images/photo2.jpg" alt="Photo2"></div>
-  </main>
-  <footer>
-    <p>&copy; 2025 My Website</p>
-  </footer>
-</body>
-</html>
-
-<!-- game.html -->
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ゲーム</title>
-  <link rel="stylesheet" href="css/style.css">
-</head>
-<body>
-  <header>
-    <div class="container">
-      <h1>Canvas Game</h1>
-      <nav>
-        <a href="index.html">Home</a>
-        <a href="galley.html">Galley</a>
-        <a href="game.html">Game</a>
-        <a href="game2.html">Game2</a>
-      </nav>
-    </div>
-  </header>
-  <main class="container">
-    <canvas id="game-canvas" width="800" height="600"></canvas>
-  </main>
-  <footer>
-    <p>&copy; 2025 My Website</p>
-  </footer>
-  <script src="js/game.js"></script>
-</body>
-</html>
-
-<!-- game2.html -->
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ゲーム2</title>
-  <link rel="stylesheet" href="css/style.css">
-</head>
-<body>
-  <header>
-    <div class="container">
-      <h1>Canvas Game 2</h1>
-      <nav>
-        <a href="index.html">Home</a>
-        <a href="galley.html">Galley</a>
-        <a href="game.html">Game</a>
-        <a href="game2.html">Game2</a>
-      </nav>
-    </div>
-  </header>
-  <main class="container">
-    <canvas id="game-canvas" width="600" height="400"></canvas>
-  </main>
-  <footer>
-    <p>&copy; 2025 My Website</p>
-  </footer>
-  <script src="js/game2.js"></script>
-</body>
-</html>
