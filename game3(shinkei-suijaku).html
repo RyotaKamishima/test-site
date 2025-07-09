@@ -82,34 +82,35 @@
       return array;
     }
 
-    function initGame() {
-      const board = document.getElementById('gameBoard');
-      document.getElementById('message').textContent = '';
-      board.innerHTML = '';
-      cards = [];
-      matchedCount = 0;
-      // images/フォルダ内からランダムに8枚選ぶ
-      const picked = pickRandom(imageFiles, 8);
-      imageUrls = picked.map(f => `./images/game3/?${f}`);
-      let images = [...imageUrls, ...imageUrls]; // ペアで計16枚
-      images = shuffle(images);
-      images.forEach((imgUrl, idx) => {
-        const card = document.createElement('div');
-        card.className = 'card';
-        card.dataset.index = idx;
-        card.innerHTML = `
-          <div class="card-inner">
-            <div class="card-front"></div>
-            <div class="card-back"><img src="${imgUrl}"></div>
-          </div>
-        `;
-        card.addEventListener('click', () => flipCard(card, imgUrl));
-        board.appendChild(card);
-        cards.push({ card, imgUrl });
-      });
-      firstCard = null;
-      secondCard = null;
-      lockBoard = false;
+   function initGame() {
+    const board = document.getElementById('gameBoard');
+    document.getElementById('message').textContent = '';
+    board.innerHTML = '';
+    cards = [];
+    matchedCount = 0;
+  
+    // ここからランダム抽出
+    const picked = pickRandom(imageFiles, 8);
+    const imageUrls = picked.map(f => `./images/game3/${f}`);
+    let images = [...imageUrls, ...imageUrls]; // ペアで計16枚
+    images = shuffle(images);
+    images.forEach((imgUrl, idx) => {
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.dataset.index = idx;
+    card.innerHTML = `
+      <div class="card-inner">
+        <div class="card-front"></div>
+        <div class="card-back"><img src="${imgUrl}"></div>
+      </div>
+    `;
+    card.addEventListener('click', () => flipCard(card, imgUrl));
+    board.appendChild(card);
+    cards.push({ card, imgUrl });
+    });
+    firstCard = null;
+    secondCard = null;
+    lockBoard = false;
     }
 
     function flipCard(cardElem, url) {
