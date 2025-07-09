@@ -1,322 +1,133 @@
 /*----------------------------------------
-  Webstyle.css - 共通スタイルシート (更新: メニューバー修正)
+  Webstyle.css - プレミアムデザイン 一新版
 ----------------------------------------*/
 
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@400;600&display=swap');
+
 :root {
-  --color-primary: #00539C;
-  --color-secondary: #FFA500;
-  --color-bg: #F9F9F9;
-  --color-bg-dark: #222222;
-  --color-text: #333333;
-  --color-text-light: #FFFFFF;
-  --color-shadow: rgba(0, 0, 0, 0.1);
-  --radius-base: 8px;
-  --transition-base: 0.3s;
+  /* カラーパレット */
+  --color-primary: #1E3A8A;
+  --color-secondary: #F59E0B;
+  --color-accent: #9333EA;
+  --color-bg: #FFFFFF;
+  --color-bg-alt: #F3F4F6;
+  --color-text: #111827;
+  --color-text-light: #6B7280;
+  --color-shadow: rgba(0, 0, 0, 0.05);
+  --radius-base: 12px;
+  --transition: 0.4s;
 }
 
-*, *::before, *::after {
-  box-sizing: border-box;
-}
-html {
-  scroll-behavior: smooth;
-  font-family: 'Yu Gothic', sans-serif;
-  font-size: 16px;
-}
-body {
-  margin: 0;
-  padding: 0;
-  background-color: var(--color-bg);
-  color: var(--color-text);
-  transition: background-color var(--transition-base), color var(--transition-base);
-  line-height: 1.6;
-}
-img { max-width: 100%; display: block; }
-button { font-family: inherit; cursor: pointer; border: none; background: none; }
-a { color: var(--color-primary); text-decoration: none; transition: color var(--transition-base); }
-a:hover { color: var(--color-secondary); }
+/* --- リセット & ベース --- */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-family: 'Inter', sans-serif; font-size: 16px; scroll-behavior: smooth; }
+body { background: var(--color-bg); color: var(--color-text); line-height: 1.6; }
+a { text-decoration: none; color: inherit; }
 
-/* ダークモード切替 */
-body.dark { background-color: var(--color-bg-dark); color: var(--color-text-light); }
-body.dark header, body.dark footer, body.dark nav { background-color: #111; color: var(--color-text-light); }
-
-/* ヘッダー */
-header { display: flex; justify-content: space-between; align-items: center; padding: 1rem 2rem; background-color: var(--color-primary); color: var(--color-text-light); position: sticky; top: 0; z-index: 1000; }
-header h1 { margin: 0; font-size: 1.75rem; }
-#darkToggle { background: transparent; font-size: 1.25rem; transition: transform var(--transition-base); }
-#darkToggle:hover { transform: rotate(20deg); }
-
-/* ナビゲーション (修正) */
+/* --- ヘッダー & ナビゲーション --- */
+header {
+  position: sticky; top: 0; z-index: 1000;
+  backdrop-filter: blur(8px);
+  background: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 2px 10px var(--color-shadow);
+}
 nav {
-  background-color: var(--color-text-light);
-  border-bottom: 1px solid #DDD;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 1rem 2rem;
+}
+nav .logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.75rem; font-weight: 700;
+  color: var(--color-primary);
 }
 nav ul {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 0;
-  padding: 0.5rem 0;
+  display: flex; gap: 1.5rem;
   list-style: none;
 }
 nav li {
-  margin: 0 0.5rem;
-}
-/*----------------------------------------
-  Webstyle.css - 共通スタイルシート (更新: メニューバー修正)
-----------------------------------------*/
-
-:root {
-  --color-primary: #00539C;
-  --color-secondary: #FFA500;
-  --color-bg: #F9F9F9;
-  --color-bg-dark: #222222;
-  --color-text: #333333;
-  --color-text-light: #FFFFFF;
-  --color-shadow: rgba(0, 0, 0, 0.1);
-  --radius-base: 8px;
-  --transition-base: 0.3s;
-}
-
-*, *::before, *::after {
-  box-sizing: border-box;
-}
-html {
-  scroll-behavior: smooth;
-  font-family: 'Yu Gothic', sans-serif;
-  font-size: 16px;
-}
-body {
-  margin: 0;
-  padding: 0;
-  background-color: var(--color-bg);
-  color: var(--color-text);
-  transition: background-color var(--transition-base), color var(--transition-base);
-  line-height: 1.6;
-}
-img { max-width: 100%; display: block; }
-button { font-family: inherit; cursor: pointer; border: none; background: none; }
-a { color: var(--color-primary); text-decoration: none; transition: color var(--transition-base); }
-a:hover { color: var(--color-secondary); }
-
-/* ダークモード切替 */
-body.dark { background-color: var(--color-bg-dark); color: var(--color-text-light); }
-body.dark header, body.dark footer, body.dark nav { background-color: #111; color: var(--color-text-light); }
-
-/* ヘッダー */
-header { display: flex; justify-content: space-between; align-items: center; padding: 1rem 2rem; background-color: var(--color-primary); color: var(--color-text-light); position: sticky; top: 0; z-index: 1000; }
-header h1 { margin: 0; font-size: 1.75rem; }
-#darkToggle { background: transparent; font-size: 1.25rem; transition: transform var(--transition-base); }
-#darkToggle:hover { transform: rotate(20deg); }
-
-/* ナビゲーション (修正) */
-nav {
-  background-color: var(--color-text-light);
-  border-bottom: 1px solid #DDD;
-}
-nav ul {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 0;
-  padding: 0.5rem 0;
-  list-style: none;
-}
-nav li {
-  margin: 0 0.5rem;
-}
-/*----------------------------------------
-  Webstyle.css - 共通スタイルシート (更新: メニューバー修正)
-----------------------------------------*/
-
-:root {
-  --color-primary: #00539C;
-  --color-secondary: #FFA500;
-  --color-bg: #F9F9F9;
-  --color-bg-dark: #222222;
-  --color-text: #333333;
-  --color-text-light: #FFFFFF;
-  --color-shadow: rgba(0, 0, 0, 0.1);
-  --radius-base: 8px;
-  --transition-base: 0.3s;
-}
-
-*, *::before, *::after {
-  box-sizing: border-box;
-}
-html {
-  scroll-behavior: smooth;
-  font-family: 'Yu Gothic', sans-serif;
-  font-size: 16px;
-}
-body {
-  margin: 0;
-  padding: 0;
-  background-color: var(--color-bg);
-  color: var(--color-text);
-  transition: background-color var(--transition-base), color var(--transition-base);
-  line-height: 1.6;
-}
-img { max-width: 100%; display: block; }
-button { font-family: inherit; cursor: pointer; border: none; background: none; }
-a { color: var(--color-primary); text-decoration: none; transition: color var(--transition-base); }
-a:hover { color: var(--color-secondary); }
-
-/* ダークモード切替 */
-body.dark { background-color: var(--color-bg-dark); color: var(--color-text-light); }
-body.dark header, body.dark footer, body.dark nav { background-color: #111; color: var(--color-text-light); }
-
-/* ヘッダー */
-header { display: flex; justify-content: space-between; align-items: center; padding: 1rem 2rem; background-color: var(--color-primary); color: var(--color-text-light); position: sticky; top: 0; z-index: 1000; }
-header h1 { margin: 0; font-size: 1.75rem; }
-#darkToggle { background: transparent; font-size: 1.25rem; transition: transform var(--transition-base); }
-#darkToggle:hover { transform: rotate(20deg); }
-
-/* ナビゲーション (修正) */
-nav {
-  background-color: var(--color-text-light);
-  border-bottom: 1px solid #DDD;
-}
-nav ul {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 0;
-  padding: 0.5rem 0;
-  list-style: none;
-}
-nav li {
-  margin: 0 0.5rem;
+  position: relative;
 }
 nav a {
-  position: relative;
-  display: inline-block;
-  padding: 0.5rem 1rem;
-  font-weight: bold;
+  font-weight: 600;
+  padding: 0.5rem 0;
+  color: var(--color-text-light);
+  transition: color var(--transition);
+}
+nav a:hover {
   color: var(--color-primary);
 }
 nav a::after {
   content: '';
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 0;
-  height: 2px;
-  background: var(--color-primary);
-  transition: width var(--transition-base);
+  position: absolute; bottom: -4px; left: 50%; transform: translateX(-50%);
+  width: 0; height: 3px;
+  background: var(--color-secondary);
+  transition: width var(--transition);
 }
-nav a:hover::after {
-  width: 100%;
+nav a:hover::after { width: 100%; }
+
+/* --- モバイルメニュー --- */
+#burger {
+  display: none;
+  flex-direction: column; gap: 4px;
+  cursor: pointer;
 }
-
-/* 共通コンテナ */
-.container, .gallery-container, #game-container { max-width: 960px; margin: 2rem auto; padding: 0 1rem; }
-
-/* ギャラリー */
-.gallery-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1rem; }
-.gallery-item { background: var(--color-text-light); border-radius: var(--radius-base); box-shadow: 0 2px 8px var(--color-shadow); overflow: hidden; transition: transform var(--transition-base); }
-.gallery-item:hover { transform: translateY(-4px); }
-.gallery-item img { transition: transform var(--transition-base); }
-.gallery-item:hover img { transform: scale(1.05); }
-.gallery-item .caption { padding: 0.5rem; text-align: center; font-size: 0.9rem; color: #666; }
-body.dark .gallery-item { background: #333; box-shadow: 0 2px 8px rgba(255,255,255,0.1); }
-body.dark .gallery-item .caption { color: #AAA; }
-
-/* モーダル */
-.modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); align-items: center; justify-content: center; z-index: 2000; }
-.modal img { max-width: 90%; max-height: 90%; border-radius: var(--radius-base); }
-
-/* ページトップボタン */
-#toTop { position: fixed; right: 1rem; bottom: 1rem; padding: 0.5rem; background-color: var(--color-primary); color: var(--color-text-light); border-radius: 50%; font-size: 1.2rem; display: none; z-index: 1000; transition: background-color var(--transition-base); }
-#toTop:hover { background-color: var(--color-secondary); }
-
-/* ゲームコンテナ */
-#game-container { width: 100%; height: auto; background: var(--color-text-light); border: 2px solid #CCC; border-radius: var(--radius-base); position: relative; overflow: hidden; }
-.target { transition: transform 0.1s; }
-
-/* フッター */
-footer { text-align: center; padding: 1rem; background-color: var(--color-primary); color: var(--color-text-light); }
-nav a::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 0;
-  height: 2px;
-  background: var(--color-primary);
-  transition: width var(--transition-base);
+#burger span {
+  width: 24px; height: 3px;
+  background: var(--color-text);
+  border-radius: var(--radius-base);
+  transition: transform var(--transition);
 }
-nav a:hover::after {
-  width: 100%;
+@media(max-width: 768px) {
+  #burger { display: flex; }
+  nav ul { display: none; position: absolute; top: 100%; right: 2rem;
+    background: var(--color-bg);
+    box-shadow: 0 4px 16px var(--color-shadow);
+    border-radius: var(--radius-base);
+    flex-direction: column;
+    padding: 1rem;
+  }
+  nav ul.show { display: flex; }
 }
 
-/* 共通コンテナ */
-.container, .gallery-container, #game-container { max-width: 960px; margin: 2rem auto; padding: 0 1rem; }
+/* --- コンテナ & グリッド --- */
+.container { max-width: 1140px; margin: 0 auto; padding: 2rem 1rem; }
 
-/* ギャラリー */
-.gallery-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1rem; }
-.gallery-item { background: var(--color-text-light); border-radius: var(--radius-base); box-shadow: 0 2px 8px var(--color-shadow); overflow: hidden; transition: transform var(--transition-base); }
-.gallery-item:hover { transform: translateY(-4px); }
-.gallery-item img { transition: transform var(--transition-base); }
-.gallery-item:hover img { transform: scale(1.05); }
-.gallery-item .caption { padding: 0.5rem; text-align: center; font-size: 0.9rem; color: #666; }
-body.dark .gallery-item { background: #333; box-shadow: 0 2px 8px rgba(255,255,255,0.1); }
-body.dark .gallery-item .caption { color: #AAA; }
-
-/* モーダル */
-.modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); align-items: center; justify-content: center; z-index: 2000; }
-.modal img { max-width: 90%; max-height: 90%; border-radius: var(--radius-base); }
-
-/* ページトップボタン */
-#toTop { position: fixed; right: 1rem; bottom: 1rem; padding: 0.5rem; background-color: var(--color-primary); color: var(--color-text-light); border-radius: 50%; font-size: 1.2rem; display: none; z-index: 1000; transition: background-color var(--transition-base); }
-#toTop:hover { background-color: var(--color-secondary); }
-
-/* ゲームコンテナ */
-#game-container { width: 100%; height: auto; background: var(--color-text-light); border: 2px solid #CCC; border-radius: var(--radius-base); position: relative; overflow: hidden; }
-.target { transition: transform 0.1s; }
-
-/* フッター */
-footer { text-align: center; padding: 1rem; background-color: var(--color-primary); color: var(--color-text-light); }
-nav a::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 0;
-  height: 2px;
-  background: var(--color-primary);
-  transition: width var(--transition-base);
+/* --- カード --- */
+.card {
+  background: var(--color-bg);
+  border-radius: var(--radius-base);
+  box-shadow: 0 2px 12px var(--color-shadow);
+  overflow: hidden;
+  transition: transform var(--transition), box-shadow var(--transition);
 }
-nav a:hover::after {
-  width: 100%;
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 6px 20px var(--color-shadow);
 }
+.card img { display: block; width: 100%; }
+.card-body { padding: 1.5rem; }
+.card-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.5rem; margin-bottom: 0.5rem;
+  color: var(--color-primary);
+}
+.card-text { color: var(--color-text-light); margin-bottom: 1rem; }
+.card-btn {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  background: var(--color-secondary);
+  color: #fff; border-radius: var(--radius-base);
+  font-weight: 600;
+  transition: background var(--transition);
+}
+.card-btn:hover { background: var(--color-accent); }
 
-/* 共通コンテナ */
-.container, .gallery-container, #game-container { max-width: 960px; margin: 2rem auto; padding: 0 1rem; }
-
-/* ギャラリー */
-.gallery-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1rem; }
-.gallery-item { background: var(--color-text-light); border-radius: var(--radius-base); box-shadow: 0 2px 8px var(--color-shadow); overflow: hidden; transition: transform var(--transition-base); }
-.gallery-item:hover { transform: translateY(-4px); }
-.gallery-item img { transition: transform var(--transition-base); }
-.gallery-item:hover img { transform: scale(1.05); }
-.gallery-item .caption { padding: 0.5rem; text-align: center; font-size: 0.9rem; color: #666; }
-body.dark .gallery-item { background: #333; box-shadow: 0 2px 8px rgba(255,255,255,0.1); }
-body.dark .gallery-item .caption { color: #AAA; }
-
-/* モーダル */
-.modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); align-items: center; justify-content: center; z-index: 2000; }
-.modal img { max-width: 90%; max-height: 90%; border-radius: var(--radius-base); }
-
-/* ページトップボタン */
-#toTop { position: fixed; right: 1rem; bottom: 1rem; padding: 0.5rem; background-color: var(--color-primary); color: var(--color-text-light); border-radius: 50%; font-size: 1.2rem; display: none; z-index: 1000; transition: background-color var(--transition-base); }
-#toTop:hover { background-color: var(--color-secondary); }
-
-/* ゲームコンテナ */
-#game-container { width: 100%; height: auto; background: var(--color-text-light); border: 2px solid #CCC; border-radius: var(--radius-base); position: relative; overflow: hidden; }
-.target { transition: transform 0.1s; }
-
-/* フッター */
-footer { text-align: center; padding: 1rem; background-color: var(--color-primary); color: var(--color-text-light); }
+/* --- フッター --- */
+footer {
+  background: var(--color-bg-alt);
+  text-align: center;
+  padding: 2rem 1rem;
+  font-size: 0.9rem;
+  color: var(--color-text-light);
+}
+footer a { color: var(--color-primary); }
