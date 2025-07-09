@@ -188,7 +188,7 @@ function isStageCleared() {
 function drawBall() {
   ctx.beginPath();
   ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
-  ctx.fillStyle = "#fff";
+  ctx.fillStyle = "#ff0000";
   ctx.fill();
   ctx.closePath();
 }
@@ -196,7 +196,7 @@ function drawBall() {
 function drawPaddle() {
   ctx.beginPath();
   ctx.rect(paddle.x, canvas.height - paddle.height, paddle.width, paddle.height);
-  ctx.fillStyle = "#0f0";
+  ctx.fillStyle = "#0fff0f";
   ctx.fill();
   ctx.closePath();
 }
