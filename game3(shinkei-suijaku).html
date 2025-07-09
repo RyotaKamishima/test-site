@@ -91,7 +91,7 @@
   
     // ここからランダム抽出
     const picked = pickRandom(imageFiles, 8);
-    const imageUrls = picked.map(f => `./images/game3/${f}`);
+    imageUrls = picked.map(f => `./images/game3/${f}`);
     let images = [...imageUrls, ...imageUrls]; // ペアで計16枚
     images = shuffle(images);
     images.forEach((imgUrl, idx) => {
