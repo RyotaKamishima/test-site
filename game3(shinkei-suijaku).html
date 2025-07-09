@@ -54,7 +54,7 @@
   <div class="message" id="message"></div>
   <script>
     // images/ディレクトリ内に img1.jpg ～ img20.jpg がある場合
-    const totalImages = 20; // images/内の画像の総数
+    const totalImages = 27; // images/内の画像の総数
     const imageFiles = Array.from({length: totalImages}, (_,i) => `img${i+1}.jpg`);
 
     // 配列からランダムに8枚選ぶ関数
@@ -90,7 +90,7 @@
       matchedCount = 0;
       // images/フォルダ内からランダムに8枚選ぶ
       const picked = pickRandom(imageFiles, 8);
-      imageUrls = picked.map(f => `./images/free_material/?${f}`);
+      imageUrls = picked.map(f => `./images/game3/?${f}`);
       let images = [...imageUrls, ...imageUrls]; // ペアで計16枚
       images = shuffle(images);
       images.forEach((imgUrl, idx) => {
