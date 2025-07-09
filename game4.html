@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <title>小山スロット</title>
+  <style>
+    body {
+      background-color: #111;
+      color: #fff;
+      text-align: center;
+      font-family: Arial, sans-serif;
+      padding-top: 50px;
+      overflow: hidden;
+    }
+
+    .slot-machine {
+      position: relative;
+      margin: 0 auto;
+      width: 360px;
+      background-color: #222;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 20px #000;
+    }
+
+    .slot-machine.hot {
+      animation: blink-red 0.5s infinite;
+    }
+
+    .slot-machine.win {
+      animation: blink-gold 0.5s infinite;
+    }
+
+    @keyframes blink-red {
+      0%, 100% { background-color: #222; }
+      50% { background-color: #880000; }
+    }
+
+    @keyframes blink-gold {
+      0%, 100% { background-color: #222; }
+      50% { background-color: gold; color: black; }
+    }
+
+    .reels {
+      display: flex;
+      justify-content: space-around;
+      margin-bottom: 20px;
+    }
+
+    .reels img {
+      width: 100px;
+      height: 100px;
+      border: 3px solid #fff;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    button {
+      padding: 12px 24px;
+      font-size: 18px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    button:disabled {
+      background-color: #777;
+    }
+
+    #result {
+      margin-top: 20px;
+      font-size: 24px;
+      font-weight: bold;
+      min-height: 2em;
+    }
+
+    .subliminal {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      width: 200px;
+      height: 200px;
+      transform: translate(-50%, -50%);
+      opacity: 0;
+      pointer-events: none;
+      z-index: 999;
+      transition: opacity 0.1s;
+    }
+
+    .subliminal.show {
+      opacity: 1;
+    }
+
+    .runner {
+      position: fixed;
+      top: 40%;
+      left: -200px;
+      width: 150px;
+      height: 150px;
+      opacity: 0.8;
+      pointer-events: none;
+      z-index: 999;
+    }
+
+    @keyframes run-across {
+      0%   { left: -200px; }
+      100% { left: 100vw; }
+    }
+
+    .run-animation {
+      animation: run-across 2s linear forwards;
+    }
+
+    .flash {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-image: url('./slot_image/slot_image1.jpg');
+      opacity: 0;
+      pointer-events: none;
+      z-index: 1000;
+      animation: flash 0.5s ease-out;
+    }
+
+    @keyframes flash {
+      0% { opacity: 1; }
+      100% { opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+
+    <nav>
+    <ul>
+      <li><a href="index.html">ホーム</a></li>
+      <li><a href="game.html">ゲームコーナー</a></li>
+    </ul>
+  </nav>
+
+  <h1>🎰 小山スロット</h1>
+
+  <div class="slot-machine" id="machine">
+    <div class="reels">
+      <img id="reel1" src="" />
+      <img id="reel2" src="" />
+      <img id="reel3" src="" />
+    </div>
+    <button id="spin">スピン！</button>
+    <div id="result"></div>
+  </div>
+
+  <!-- エフェクト系 -->
+  <img id="subliminal" class="subliminal" src="./slot_image/subliminal.png">
+  <div id="flash" class="flash" style="display:none;"></div>
+
+  <script>
+    const images = [
+ "./slot_image/slot_image1.jpg",
+      "./slot_image/slot_image2.jpg",
+      "./slot_image/slot_image3.jpg",
+      "./slot_image/slot_image4.jpg",
+      "./slot_image/slot_image5.jpg",
+      "./slot_image/slot_image6.jpg",
+      "./slot_image/slot_image7.jpg",
+      "./slot_image/slot_image8.jpg",
+      "./slot_image/slot_image9.jpg",
+      "./slot_image/slot_image10.jpg",
+];
+
+
+const runnerImages = images;
+
+
+
+    const reels = [
+      { el: document.getElementById('reel1'), interval: null, spinning: false, stopped: false },
+      { el: document.getElementById('reel2'), interval: null, spinning: false, stopped: false },
+      { el: document.getElementById('reel3'), interval: null, spinning: false, stopped: false }
+    ];
+
+
+function runMultipleRunners(count) {
+  let lastTop = null;
+
+  for (let i = 0; i < count; i++) {
+    const runnerClone = document.createElement('img');
+    runnerClone.src = runnerImages[i % runnerImages.length];
+    runnerClone.className = 'runner run-animation';
+
+    // 縦位置のランダム、前回と似すぎないように調整
+    let top;
+    do {
+      top = 10 + Math.random() * 80;
+    } while (lastTop !== null && Math.abs(top - lastTop) < 15);
+    lastTop = top;
+
+    runnerClone.style.top = `${top}%`;
+
+    document.body.appendChild(runnerClone);
+    runnerClone.addEventListener('animationend', () => {
+      runnerClone.remove();
+    });
+  }
+}
+
+
+    const spinBtn = document.getElementById('spin');
+    const result = document.getElementById('result');
+    const machine = document.getElementById('machine');
+    const subliminal = document.getElementById('subliminal');
+    const flash = document.getElementById('flash');
+
+    let finalResult = [];
+
+    function getRandomImage() {
+      return images[Math.floor(Math.random() * images.length)];
+    }
+
+    function triggerHotEffect() {
+      machine.classList.add('hot');
+      subliminal.classList.add('show');
+      setTimeout(() => subliminal.classList.remove('show'), 150);
+runMultipleRunners(1);  // 1個走らせる（熱演出の派手さ調整可能）
+
+    }
+
+    function triggerWinEffect() {
+      machine.classList.add('win');
+      flash.style.display = 'block';
+      flash.style.animation = 'flash 0.5s ease-out';
+runMultipleRunners(7);
+      setTimeout(() => {
+        flash.style.display = 'none';
+        machine.classList.remove('win');
+      }, 500);
+    }
+
+    function startSpinning() {
+      reels.forEach((reel, i) => {
+        reel.spinning = true;
+        reel.stopped = false;
+        reel.interval = setInterval(() => {
+          reel.el.src = getRandomImage();
+        }, 100);
+      });
+    }
+
+    function stopReel(index) {
+      const reel = reels[index];
+      if (!reel.spinning) return;
+
+      clearInterval(reel.interval);
+      reel.el.src = finalResult[index];
+      reel.spinning = false;
+      reel.stopped = true;
+
+      checkProgress();
+    }
+
+    function checkProgress() {
+      const stopped = reels.filter(r => r.stopped).length;
+
+      if (stopped === 2) {
+        if (finalResult[0] === finalResult[1]) {
+          triggerHotEffect();
+        }
+      }
+
+      if (stopped === 3) {
+        if (finalResult[0] === finalResult[1] && finalResult[1] === finalResult[2]) {
+          result.textContent = "🎉 大当たり！！";
+          triggerWinEffect();
+        } else if (
+          finalResult[0] === finalResult[1] ||
+          finalResult[1] === finalResult[2] ||
+          finalResult[0] === finalResult[2]
+        ) {
+          result.textContent = "✨ 2つ一致！惜しい！";
+        } else {
+          result.textContent = "🙈 ハズレ！";
+        }
+
+        machine.classList.remove('hot');
+        spinBtn.disabled = false;
+      }
+    }
+
+    spinBtn.addEventListener('click', () => {
+      result.textContent = "";
+      machine.classList.remove('hot');
+      machine.classList.remove('win');
+      spinBtn.disabled = true;
+      flash.style.display = 'none';
+
+      // 10回に1回ぐらいの確率で大当たりを仕込む
+if (Math.random() < 0.1) {
+  // 大当たり：全部同じ絵柄
+  const winningImage = getRandomImage();
+  finalResult = [winningImage, winningImage, winningImage];
+} else {
+  // 普通のランダム
+  finalResult = [getRandomImage(), getRandomImage(), getRandomImage()];
+}
+
+      startSpinning();
+    });
+
+    reels.forEach((reel, index) => {
+      reel.el.addEventListener('click', () => stopReel(index));
+    });
+
+    // 初期表示
+    reels.forEach((r, i) => r.el.src = images[i % images.length]);
+  </script>
+</body>
+</html>
