@@ -13,6 +13,20 @@
       overflow: hidden;
     }
 
+    nav ul {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 20px 0;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    nav a {
+      color: #4CAF50;
+      text-decoration: none;
+    }
+
     .slot-machine {
       position: relative;
       margin: 0 auto;
@@ -124,17 +138,71 @@
       pointer-events: none;
       z-index: 1000;
       animation: flash 0.5s ease-out;
+      display: none;
+    }
+
+    .flash.whiteout {
+      background-color: white;
+      background-image: none;
+      animation: whiteout-flash 1s ease-out;
+      display: block;
     }
 
     @keyframes flash {
       0% { opacity: 1; }
       100% { opacity: 0; }
     }
+
+    @keyframes whiteout-flash {
+      0%   { opacity: 0; }
+      20%  { opacity: 1; }
+      80%  { opacity: 1; }
+      100% { opacity: 0; }
+    }
+
+    #whiteout-text {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 80px;
+      font-weight: bold;
+      background: linear-gradient(45deg, red, orange, yellow, lime, cyan, blue, violet);
+      -webkit-background-clip: text;
+      color: transparent;
+      animation: glow 1s infinite alternate, shake 0.5s infinite;
+      text-shadow: 0 0 10px #fff, 0 0 20px #ff0000, 0 0 30px #ff0000;
+      z-index: 1001;
+      opacity: 0;
+      transition: opacity 0.5s;
+    }
+
+    .flash.whiteout #whiteout-text {
+      opacity: 1;
+    }
+
+    @keyframes glow {
+      from {
+        text-shadow: 0 0 10px #fff, 0 0 20px #ff0000, 0 0 30px #ff0000;
+      }
+      to {
+        text-shadow: 0 0 20px #fff, 0 0 40px #ff0000, 0 0 60px #ff0000;
+      }
+    }
+
+    @keyframes shake {
+      0% { transform: translate(-50%, -50%) rotate(0deg); }
+      25% { transform: translate(-50%, -50%) rotate(2deg); }
+      50% { transform: translate(-50%, -50%) rotate(-2deg); }
+      75% { transform: translate(-50%, -50%) rotate(2deg); }
+      100% { transform: translate(-50%, -50%) rotate(0deg); }
+    }
+
   </style>
 </head>
 <body>
 
-    <nav>
+  <nav>
     <ul>
       <li><a href="index.html">ホーム</a></li>
       <li><a href="game.html">ゲームコーナー</a></li>
@@ -153,13 +221,14 @@
     <div id="result"></div>
   </div>
 
-  <!-- エフェクト系 -->
   <img id="subliminal" class="subliminal" src="./slot_image/subliminal.png">
-  <div id="flash" class="flash" style="display:none;"></div>
+  <div id="flash" class="flash">
+    <div id="whiteout-text">小山確定</div>
+  </div>
 
   <script>
     const images = [
- "./slot_image/slot_image1.jpg",
+      "./slot_image/slot_image1.jpg",
       "./slot_image/slot_image2.jpg",
       "./slot_image/slot_image3.jpg",
       "./slot_image/slot_image4.jpg",
@@ -169,12 +238,9 @@
       "./slot_image/slot_image8.jpg",
       "./slot_image/slot_image9.jpg",
       "./slot_image/slot_image10.jpg",
-];
+    ];
 
-
-const runnerImages = images;
-
-
+    const runnerImages = images;
 
     const reels = [
       { el: document.getElementById('reel1'), interval: null, spinning: false, stopped: false },
@@ -182,37 +248,35 @@ const runnerImages = images;
       { el: document.getElementById('reel3'), interval: null, spinning: false, stopped: false }
     ];
 
+    function runMultipleRunners(count) {
+      let lastTop = null;
 
-function runMultipleRunners(count) {
-  let lastTop = null;
+      for (let i = 0; i < count; i++) {
+        const runnerClone = document.createElement('img');
+        runnerClone.src = runnerImages[i % runnerImages.length];
+        runnerClone.className = 'runner run-animation';
 
-  for (let i = 0; i < count; i++) {
-    const runnerClone = document.createElement('img');
-    runnerClone.src = runnerImages[i % runnerImages.length];
-    runnerClone.className = 'runner run-animation';
+        let top;
+        do {
+          top = 10 + Math.random() * 80;
+        } while (lastTop !== null && Math.abs(top - lastTop) < 15);
+        lastTop = top;
 
-    // 縦位置のランダム、前回と似すぎないように調整
-    let top;
-    do {
-      top = 10 + Math.random() * 80;
-    } while (lastTop !== null && Math.abs(top - lastTop) < 15);
-    lastTop = top;
+        runnerClone.style.top = `${top}%`;
 
-    runnerClone.style.top = `${top}%`;
-
-    document.body.appendChild(runnerClone);
-    runnerClone.addEventListener('animationend', () => {
-      runnerClone.remove();
-    });
-  }
-}
-
+        document.body.appendChild(runnerClone);
+        runnerClone.addEventListener('animationend', () => {
+          runnerClone.remove();
+        });
+      }
+    }
 
     const spinBtn = document.getElementById('spin');
     const result = document.getElementById('result');
     const machine = document.getElementById('machine');
     const subliminal = document.getElementById('subliminal');
     const flash = document.getElementById('flash');
+    const whiteoutText = document.getElementById('whiteout-text');
 
     let finalResult = [];
 
@@ -224,19 +288,32 @@ function runMultipleRunners(count) {
       machine.classList.add('hot');
       subliminal.classList.add('show');
       setTimeout(() => subliminal.classList.remove('show'), 150);
-runMultipleRunners(1);  // 1個走らせる（熱演出の派手さ調整可能）
-
+      runMultipleRunners(1);
     }
 
     function triggerWinEffect() {
       machine.classList.add('win');
-      flash.style.display = 'block';
-      flash.style.animation = 'flash 0.5s ease-out';
-runMultipleRunners(7);
+
+      const whiteoutChance = Math.random() < 0.1;
+
+      if (whiteoutChance) {
+        flash.classList.add('whiteout');
+        flash.style.display = 'block';
+        whiteoutText.style.opacity = '1';
+      } else {
+        flash.classList.remove('whiteout');
+        flash.style.display = 'block';
+        flash.style.animation = 'flash 0.5s ease-out';
+        whiteoutText.style.opacity = '0';
+        runMultipleRunners(7);
+      }
+
       setTimeout(() => {
         flash.style.display = 'none';
+        flash.classList.remove('whiteout');
+        whiteoutText.style.opacity = '0';
         machine.classList.remove('win');
-      }, 500);
+      }, 1000);
     }
 
     function startSpinning() {
@@ -258,27 +335,19 @@ runMultipleRunners(7);
       reel.spinning = false;
       reel.stopped = true;
 
-      checkProgress();
-    }
-
-    function checkProgress() {
       const stopped = reels.filter(r => r.stopped).length;
 
-      if (stopped === 2) {
-        if (finalResult[0] === finalResult[1]) {
-          triggerHotEffect();
-        }
+      if (stopped === 2 && finalResult[0] === finalResult[1]) {
+        triggerHotEffect();
       }
 
-      if (stopped === 3) {
-        if (finalResult[0] === finalResult[1] && finalResult[1] === finalResult[2]) {
+      if (reels.every(r => r.stopped)) {
+        const [a, b, c] = finalResult;
+
+        if (a === b && b === c) {
           result.textContent = "🎉 大当たり！！";
           triggerWinEffect();
-        } else if (
-          finalResult[0] === finalResult[1] ||
-          finalResult[1] === finalResult[2] ||
-          finalResult[0] === finalResult[2]
-        ) {
+        } else if (a === b || b === c || a === c) {
           result.textContent = "✨ 2つ一致！惜しい！";
         } else {
           result.textContent = "🙈 ハズレ！";
@@ -296,16 +365,7 @@ runMultipleRunners(7);
       spinBtn.disabled = true;
       flash.style.display = 'none';
 
-      // 10回に1回ぐらいの確率で大当たりを仕込む
-if (Math.random() < 0.1) {
-  // 大当たり：全部同じ絵柄
-  const winningImage = getRandomImage();
-  finalResult = [winningImage, winningImage, winningImage];
-} else {
-  // 普通のランダム
-  finalResult = [getRandomImage(), getRandomImage(), getRandomImage()];
-}
-
+      finalResult = [getRandomImage(), getRandomImage(), getRandomImage()];
       startSpinning();
     });
 
