@@ -1,5 +1,5 @@
 /*----------------------------------------
-  Webstyle.css - プレミアムデザイン 第二版（ナビ文字サイズ調整）
+  Webstyle.css - プレミアムデザイン 第四版 (追加要素強化)
 ----------------------------------------*/
 
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@400;600&display=swap');
@@ -16,6 +16,19 @@
   --color-shadow: rgba(0, 0, 0, 0.05);
   --radius-base: 12px;
   --transition: 0.4s;
+  --scroll-progress: 0%; /* JSで更新 */
+}
+
+/* スクロールプログレスバー */
+#progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: var(--scroll-progress);
+  height: 4px;
+  background: var(--color-accent);
+  z-index: 1500;
+  transition: width 0.1s;
 }
 
 /* --- リセット & ベース --- */
@@ -24,6 +37,99 @@ html { font-family: 'Inter', sans-serif; font-size: 16px; scroll-behavior: smoot
 body { background: var(--color-bg); color: var(--color-text); line-height: 1.6; }
 a { text-decoration: none; color: inherit; }
 
+/* カスタムスクロールバー */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--color-bg-alt); border-radius: var(--radius-base); }
+::-webkit-scrollbar-thumb { background: var(--color-primary); border-radius: var(--radius-base); }
+
+/* --- ヒーローセクション --- */
+.hero {
+  display: flex; align-items: center; justify-content: center;
+  height: 80vh;
+  background: url('../images/hero-bg.jpg') center/cover no-repeat;
+  position: relative;
+  color: #fff;
+  text-align: center;
+}
+.hero::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: rgba(30,58,138,0.6);
+}
+.hero-content {
+  position: relative;
+  z-index: 1;
+  max-width: 800px;
+  animation: fade-in 1s ease-out;
+}
+.hero-title { font-family: 'Playfair Display', serif; font-size: 3rem; margin-bottom: 1rem; }
+.hero-subtitle { font-size: 1.25rem; }
+
+/* ボタンユーティリティ */
+.btn {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  border-radius: var(--radius-base);
+  transition: transform var(--transition), box-shadow var(--transition);
+}
+.btn-primary { background: var(--color-primary); color: #fff; }
+.btn-secondary { background: var(--color-secondary); color: #fff; }
+.btn:hover { transform: translateY(-3px); box-shadow: 0 4px 12px var(--color-shadow); }
+
+/* フェードインアニメーション */
+@keyframes fade-in { from { opacity: 0; transform: translateY(20px);} to { opacity: 1; transform: translateY(0);} }
+.fade-in { opacity: 0; transform: translateY(20px); animation: fade-in 0.8s forwards; }
+
+/* セクション見出し */
+.section-title {
+  position: relative;
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  color: var(--color-primary);
+}
+.section-title::after {
+  content: '';
+  position: absolute; bottom: -8px; left: 50%; transform: translateX(-50%);
+  width: 60px; height: 4px;
+  background: var(--color-secondary);
+  border-radius: 2px;
+}
+
+/* ツールチップ */
+.tooltip {
+  position: relative;
+  cursor: help;
+}
+.tooltip:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1;
+}
+.tooltip-text {
+  visibility: hidden;
+  opacity: 0;
+  width: max-content;
+  background: var(--color-text-light);
+  color: #fff;
+  text-align: center;
+  border-radius: var(--radius-base);
+  padding: 0.5rem;
+  position: absolute;
+  bottom: 125%; left: 50%; transform: translateX(-50%);
+  transition: opacity var(--transition);
+  white-space: nowrap;
+  z-index: 2000;
+}
+.tooltip-text::after {
+  content: '';
+  position: absolute;
+  top: 100%; left: 50%; transform: translateX(-50%);
+  border-width: 6px;
+  border-style: solid;
+  border-color: var(--color-text-light) transparent transparent transparent;
+}
+
 /* --- ヘッダー & ナビゲーション --- */
 header {
   position: sticky; top: 0; z-index: 1000;
@@ -31,104 +137,40 @@ header {
   background: rgba(255, 255, 255, 0.8);
   box-shadow: 0 2px 10px var(--color-shadow);
 }
-nav {
-  display: flex; justify-content: space-between; align-items: center;
-  padding: 1rem 2rem;
-}
-nav .logo {
-  font-family: 'Playfair Display', serif;
-  font-size: 1.75rem; font-weight: 700;
-  color: var(--color-primary);
-}
-nav ul {
-  display: flex; gap: 1.5rem;
-  list-style: none;
-}
-nav li {
-  position: relative;
-}
-nav a {
-  font-weight: 600;
-  font-size: 0.875rem; /* 文字を少し小さく */
-  padding: 0.5rem 0;
-  color: var(--color-text-light);
-  transition: color var(--transition);
-}
-nav a:hover {
-  color: var(--color-primary);
-}
-nav a::after {
-  content: '';
-  position: absolute; bottom: -4px; left: 50%; transform: translateX(-50%);
-  width: 0; height: 3px;
-  background: var(--color-secondary);
-  transition: width var(--transition);
-}
+nav { display: flex; justify-content: space-between; align-items: center; padding: 1rem 2rem; }
+nav .logo { font-family: 'Playfair Display', serif; font-size: 1.75rem; font-weight: 700; color: var(--color-primary); }
+nav ul { display: flex; gap: 1.5rem; list-style: none; }
+nav li { position: relative; }
+nav a { font-weight: 600; font-size: 0.875rem; padding: 0.5rem 0; color: var(--color-text-light); transition: color var(--transition); }
+nav a:hover { color: var(--color-primary); }
+nav a::after { content: ''; position: absolute; bottom: -4px; left: 50%; transform: translateX(-50%); width: 0; height: 3px; background: var(--color-secondary); transition: width var(--transition); }
 nav a:hover::after { width: 100%; }
 
 /* --- モバイルメニュー --- */
-#burger {
-  display: none;
-  flex-direction: column; gap: 4px;
-  cursor: pointer;
-}
-#burger span {
-  width: 24px; height: 3px;
-  background: var(--color-text);
-  border-radius: var(--radius-base);
-  transition: transform var(--transition);
-}
-@media(max-width: 768px) {
-  #burger { display: flex; }
-  nav ul { display: none; position: absolute; top: 100%; right: 2rem;
-    background: var(--color-bg);
-    box-shadow: 0 4px 16px var(--color-shadow);
-    border-radius: var(--radius-base);
-    flex-direction: column;
-    padding: 1rem;
-  }
-  nav ul.show { display: flex; }
-}
+#burger { display: none; flex-direction: column; gap: 4px; cursor: pointer; }
+#burger span { width: 24px; height: 3px; background: var(--color-text); border-radius: var(--radius-base); transition: transform var(--transition); }
+@media(max-width: 768px) { #burger { display: flex; } nav ul { display: none; position: absolute; top: 100%; right: 2rem; background: var(--color-bg); box-shadow: 0 4px 16px var(--color-shadow); border-radius: var(--radius-base); flex-direction: column; padding: 1rem; } nav ul.show { display: flex; } }
 
 /* --- コンテナ & グリッド --- */
 .container { max-width: 1140px; margin: 0 auto; padding: 2rem 1rem; }
 
 /* --- カード --- */
-.card {
-  background: var(--color-bg);
-  border-radius: var(--radius-base);
-  box-shadow: 0 2px 12px var(--color-shadow);
-  overflow: hidden;
-  transition: transform var(--transition), box-shadow var(--transition);
-}
-.card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 6px 20px var(--color-shadow);
-}
+.card { background: var(--color-bg); border-radius: var(--radius-base); box-shadow: 0 2px 12px var(--color-shadow); overflow: hidden; transition: transform var(--transition), box-shadow var(--transition); }
+.card:hover { transform: translateY(-6px); box-shadow: 0 6px 20px var(--color-shadow); }
 .card img { display: block; width: 100%; }
 .card-body { padding: 1.5rem; }
-.card-title {
-  font-family: 'Playfair Display', serif;
-  font-size: 1.5rem; margin-bottom: 0.5rem;
-  color: var(--color-primary);
-}
+.card-title { font-family: 'Playfair Display', serif; font-size: 1.5rem; margin-bottom: 0.5rem; color: var(--color-primary); }
 .card-text { color: var(--color-text-light); margin-bottom: 1rem; }
-.card-btn {
-  display: inline-block;
-  padding: 0.75rem 1.5rem;
-  background: var(--color-secondary);
-  color: #fff; border-radius: var(--radius-base);
-  font-weight: 600;
-  transition: background var(--transition);
-}
+.card-btn { display: inline-block; padding: 0.75rem 1.5rem; background: var(--color-secondary); color: #fff; border-radius: var(--radius-base); font-weight: 600; transition: background var(--transition); }
 .card-btn:hover { background: var(--color-accent); }
 
 /* --- フッター --- */
-footer {
-  background: var(--color-bg-alt);
-  text-align: center;
-  padding: 2rem 1rem;
-  font-size: 0.9rem;
-  color: var(--color-text-light);
-}
+footer { background: var(--color-bg-alt); text-align: center; padding: 2rem 1rem; font-size: 0.9rem; color: var(--color-text-light); }
 footer a { color: var(--color-primary); }
+
+/*----------------------------------------
+  JavaScript連携: scroll-progressバー & theme-toggle
+  【index.htmlに以下を追加】
+  <div id="progress-bar"></div>
+  <script src="js/ui.js" defer></script>
+----------------------------------------*/
