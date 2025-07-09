@@ -44,7 +44,7 @@ a { text-decoration: none; color: inherit; }
 ::-webkit-scrollbar-thumb { background: var(--color-primary); border-radius: var(--radius-base); }
 
 /* --- ヒーローセクション --- */
-.hero { display: flex; align-items: center; justify-content: center; height: 80vh; background: url('../images/haikei.jpg')  background-image: url('../images/');
+.hero { display: flex; align-items: center; justify-content: center; height: 80vh; background: url('../images/haikei.jpg')  background-image: url('../images/freematerial/2091abe7-566d-4c5b-9ee2-cecd34441a90.jpg');
   background-repeat: no-repeat;
   background-position: center center;
   background-size: cover;center/cover no-repeat; position: relative; color: #fff; text-align: center; }
