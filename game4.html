@@ -13,20 +13,6 @@
       overflow: hidden;
     }
 
-    nav ul {
-      list-style: none;
-      padding: 0;
-      margin: 0 0 20px 0;
-      display: flex;
-      justify-content: center;
-      gap: 20px;
-    }
-
-    nav a {
-      color: #4CAF50;
-      text-decoration: none;
-    }
-
     .slot-machine {
       position: relative;
       margin: 0 auto;
@@ -90,79 +76,29 @@
       min-height: 2em;
     }
 
-    .subliminal {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      width: 200px;
-      height: 200px;
-      transform: translate(-50%, -50%);
-      opacity: 0;
-      pointer-events: none;
-      z-index: 999;
-      transition: opacity 0.1s;
-    }
-
-    .subliminal.show {
-      opacity: 1;
-    }
-
-    .runner {
-      position: fixed;
-      top: 40%;
-      left: -200px;
-      width: 150px;
-      height: 150px;
-      opacity: 0.8;
-      pointer-events: none;
-      z-index: 999;
-    }
-
-    @keyframes run-across {
-      0%   { left: -200px; }
-      100% { left: 100vw; }
-    }
-
-    .run-animation {
-      animation: run-across 2s linear forwards;
-    }
-
     .flash {
       position: fixed;
       top: 0;
       left: 0;
       width: 100vw;
       height: 100vh;
-      background-image: url('./slot_image/slot_image1.jpg');
+      background-color: white;
       opacity: 0;
       pointer-events: none;
       z-index: 1000;
-      animation: flash 0.5s ease-out;
+      transition: opacity 0.5s;
       display: none;
     }
 
     .flash.whiteout {
-      background-color: white;
-      background-image: none;
-      animation: whiteout-flash 1s ease-out;
+      opacity: 1;
+      pointer-events: all;
       display: block;
-    }
-
-    @keyframes flash {
-      0% { opacity: 1; }
-      100% { opacity: 0; }
-    }
-
-    @keyframes whiteout-flash {
-      0%   { opacity: 0; }
-      20%  { opacity: 1; }
-      80%  { opacity: 1; }
-      100% { opacity: 0; }
     }
 
     #whiteout-text {
       position: absolute;
-      top: 50%;
+      top: 40%;
       left: 50%;
       transform: translate(-50%, -50%);
       font-size: 80px;
@@ -181,13 +117,31 @@
       opacity: 1;
     }
 
+    #whiteout-button {
+      position: absolute;
+      top: 65%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      padding: 20px 40px;
+      font-size: 28px;
+      background: linear-gradient(45deg, gold, orange, red);
+      border: none;
+      border-radius: 12px;
+      color: white;
+      cursor: pointer;
+      box-shadow: 0 0 20px #ff0000;
+      opacity: 0;
+      transition: opacity 0.5s;
+      z-index: 1002;
+    }
+
+    .flash.whiteout #whiteout-button {
+      opacity: 1;
+    }
+
     @keyframes glow {
-      from {
-        text-shadow: 0 0 10px #fff, 0 0 20px #ff0000, 0 0 30px #ff0000;
-      }
-      to {
-        text-shadow: 0 0 20px #fff, 0 0 40px #ff0000, 0 0 60px #ff0000;
-      }
+      from { text-shadow: 0 0 10px #fff, 0 0 20px #ff0000, 0 0 30px #ff0000; }
+      to   { text-shadow: 0 0 20px #fff, 0 0 40px #ff0000, 0 0 60px #ff0000; }
     }
 
     @keyframes shake {
@@ -197,18 +151,9 @@
       75% { transform: translate(-50%, -50%) rotate(2deg); }
       100% { transform: translate(-50%, -50%) rotate(0deg); }
     }
-
   </style>
 </head>
 <body>
-
-  <nav>
-    <ul>
-      <li><a href="index.html">ホーム</a></li>
-      <li><a href="game.html">ゲームコーナー</a></li>
-    </ul>
-  </nav>
-
   <h1>🎰 小山スロット</h1>
 
   <div class="slot-machine" id="machine">
@@ -221,9 +166,9 @@
     <div id="result"></div>
   </div>
 
-  <img id="subliminal" class="subliminal" src="./slot_image/subliminal.png">
   <div id="flash" class="flash">
     <div id="whiteout-text">小山確定</div>
+    <button id="whiteout-button">小山確定ボタン</button>
   </div>
 
   <script>
@@ -240,80 +185,22 @@
       "./slot_image/slot_image10.jpg",
     ];
 
-    const runnerImages = images;
-
     const reels = [
       { el: document.getElementById('reel1'), interval: null, spinning: false, stopped: false },
       { el: document.getElementById('reel2'), interval: null, spinning: false, stopped: false },
       { el: document.getElementById('reel3'), interval: null, spinning: false, stopped: false }
     ];
 
-    function runMultipleRunners(count) {
-      let lastTop = null;
-
-      for (let i = 0; i < count; i++) {
-        const runnerClone = document.createElement('img');
-        runnerClone.src = runnerImages[i % runnerImages.length];
-        runnerClone.className = 'runner run-animation';
-
-        let top;
-        do {
-          top = 10 + Math.random() * 80;
-        } while (lastTop !== null && Math.abs(top - lastTop) < 15);
-        lastTop = top;
-
-        runnerClone.style.top = `${top}%`;
-
-        document.body.appendChild(runnerClone);
-        runnerClone.addEventListener('animationend', () => {
-          runnerClone.remove();
-        });
-      }
-    }
-
     const spinBtn = document.getElementById('spin');
     const result = document.getElementById('result');
     const machine = document.getElementById('machine');
-    const subliminal = document.getElementById('subliminal');
     const flash = document.getElementById('flash');
-    const whiteoutText = document.getElementById('whiteout-text');
-
+    const whiteoutButton = document.getElementById('whiteout-button');
     let finalResult = [];
+    let whiteoutPending = false;
 
     function getRandomImage() {
       return images[Math.floor(Math.random() * images.length)];
-    }
-
-    function triggerHotEffect() {
-      machine.classList.add('hot');
-      subliminal.classList.add('show');
-      setTimeout(() => subliminal.classList.remove('show'), 150);
-      runMultipleRunners(1);
-    }
-
-    function triggerWinEffect() {
-      machine.classList.add('win');
-
-      const whiteoutChance = Math.random() < 0.1;
-
-      if (whiteoutChance) {
-        flash.classList.add('whiteout');
-        flash.style.display = 'block';
-        whiteoutText.style.opacity = '1';
-      } else {
-        flash.classList.remove('whiteout');
-        flash.style.display = 'block';
-        flash.style.animation = 'flash 0.5s ease-out';
-        whiteoutText.style.opacity = '0';
-        runMultipleRunners(7);
-      }
-
-      setTimeout(() => {
-        flash.style.display = 'none';
-        flash.classList.remove('whiteout');
-        whiteoutText.style.opacity = '0';
-        machine.classList.remove('win');
-      }, 1000);
     }
 
     function startSpinning() {
@@ -338,42 +225,60 @@
       const stopped = reels.filter(r => r.stopped).length;
 
       if (stopped === 2 && finalResult[0] === finalResult[1]) {
-        triggerHotEffect();
+        machine.classList.add('hot');
       }
 
-      if (reels.every(r => r.stopped)) {
+      if (stopped === 3) {
         const [a, b, c] = finalResult;
-
         if (a === b && b === c) {
-          result.textContent = "🎉 大当たり！！";
-          triggerWinEffect();
+          if (Math.random() < 0.1) {
+            whiteoutPending = true;
+            flash.classList.add('whiteout');
+          } else {
+            result.textContent = "🎉 大当たり！！";
+            machine.classList.add('win');
+            spinBtn.disabled = false;
+          }
         } else if (a === b || b === c || a === c) {
           result.textContent = "✨ 2つ一致！惜しい！";
+          spinBtn.disabled = false;
         } else {
           result.textContent = "🙈 ハズレ！";
+          spinBtn.disabled = false;
         }
 
         machine.classList.remove('hot');
-        spinBtn.disabled = false;
       }
     }
 
     spinBtn.addEventListener('click', () => {
       result.textContent = "";
-      machine.classList.remove('hot');
-      machine.classList.remove('win');
+      machine.classList.remove('hot', 'win');
       spinBtn.disabled = true;
-      flash.style.display = 'none';
-
+      flash.classList.remove('whiteout');
+      whiteoutPending = false;
       finalResult = [getRandomImage(), getRandomImage(), getRandomImage()];
       startSpinning();
     });
 
     reels.forEach((reel, index) => {
-      reel.el.addEventListener('click', () => stopReel(index));
+      reel.el.addEventListener('click', () => {
+        if (index === 2 && whiteoutPending) {
+          flash.classList.add('whiteout');
+        } else {
+          stopReel(index);
+        }
+      });
     });
 
-    // 初期表示
+    whiteoutButton.addEventListener('click', () => {
+      flash.classList.remove('whiteout');
+      whiteoutPending = false;
+      machine.classList.add('win');
+      result.textContent = "🎉 大当たり！！";
+      spinBtn.disabled = false;
+    });
+
     reels.forEach((r, i) => r.el.src = images[i % images.length]);
   </script>
 </body>
