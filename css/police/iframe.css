@@ -1,0 +1,21 @@
+@charset "utf-8";
+body {
+  border-top: none;
+}
+
+#header {
+  border-bottom: none;
+  margin: 0;
+}
+
+.gnav-btn:hover ~ .snavBox,
+.snavBox:hover {
+  display: block !important;
+}
+.snavBox[aria-hidden="true"] {
+  animation: none;
+}
+
+#footer {
+  margin: 0;
+}
